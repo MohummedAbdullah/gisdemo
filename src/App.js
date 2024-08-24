@@ -1,20 +1,18 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import React from 'react';
+import { useSelector } from 'react-redux'; // Import useSelector
 import './App.css';
 import MapPanel from './components/MapPanel';
 import KPIPanel from './components/KPIPanel';
 import TablePanel from './components/TablePanel';
-import AnalysisPanel from './components/AnalysisPanel';
+import AnalyisPanel from './components/AnalysisPanel';
 import ChartPanel from './components/ChartPanel';
 import Auth from './components/Auth';
 import Navbar from './components/Navbar';
 
-const GOOGLE_CLIENT_ID = '1001243476296-q2flh2qngo290ku5tddpo9q3i3ae7k05.apps.googleusercontent.com'; // Your client ID
-
 function App() {
-  const [selectedValue, setSelectedValue] = useState("ECC Complaints");
+  const [selectedValue, setSelectedValue] = React.useState("ECC Complaints");
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const zoom = useSelector((state) => state.map.zoom); // Get zoom from the state
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
@@ -27,17 +25,28 @@ function App() {
   ];
 
   if (!isAuthenticated) {
-    return (
-      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        <Auth />
-      </GoogleOAuthProvider>
-    );
+    return <Auth />;
   }
 
   return (
     <div className="App">
       <Navbar selectedValue={selectedValue} handleChange={handleChange} options={options} />
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", position: "relative" }}>
+        {/* Zoom level display */}
+        <div 
+          style={{ 
+            position: "absolute", 
+            top: 20, 
+            left: 50, 
+            backgroundColor: "rgba(0, 0, 0, 0.7)", 
+            color: "white", 
+            padding: "5px 10px", 
+            borderRadius: "5px",
+            zIndex: 1000 
+          }}
+        >
+           Zoom Level: {zoom}
+        </div>
         <div style={{ flex: 1 }}>
           <MapPanel />
           <TablePanel />
@@ -47,7 +56,7 @@ function App() {
         </div>
         <div>
           <ChartPanel selectedValue={selectedValue} />
-          <AnalysisPanel />
+          <AnalyisPanel />
         </div>
       </div>
     </div>
