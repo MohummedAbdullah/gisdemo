@@ -10,7 +10,7 @@ import ChartPanel from './components/ChartPanel';
 import Auth from './components/Auth';
 import Navbar from './components/Navbar';
 
-const GOOGLE_CLIENT_ID = 'your-google-client-id.apps.googleusercontent.com'; // Replace with your client ID
+const GOOGLE_CLIENT_ID = '1001243476296-q2flh2qngo290ku5tddpo9q3i3ae7k05.apps.googleusercontent.com'; // Your client ID
 
 function App() {
   const [selectedValue, setSelectedValue] = useState("ECC Complaints");
@@ -27,7 +27,6 @@ function App() {
   ];
 
   if (!isAuthenticated) {
-    // Show login page if the user is not authenticated
     return (
       <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         <Auth />

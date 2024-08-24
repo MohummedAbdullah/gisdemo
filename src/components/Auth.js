@@ -7,13 +7,24 @@ const Auth = () => {
   const dispatch = useDispatch();
 
   const handleSuccess = (response) => {
-    // Assuming successful login returns a token
-    console.log(response);  // For debug, log the response
-    dispatch(setAuthentication(true));
-    // Here, you would also save the token to secure storage
+    const { credential } = response;
+
+    // Log the credential for debugging purposes
+    console.log('Credential:', credential);
+
+    // Store the token in local storage
+    localStorage.setItem('authToken', credential);
+
+    // Simulate setting authentication state
+    dispatch(setAuthentication({
+      isAuthenticated: true,
+      user: { name: 'User Name' }, // Replace with actual user data
+      token: credential
+    }));
   };
 
-  const handleError = () => {
+  const handleError = (error) => {
+    console.error('Login Failed:', error);
     alert('Login Failed. Please try again.');
   };
 
@@ -29,5 +40,3 @@ const Auth = () => {
 };
 
 export default Auth;
-
-
